@@ -1,0 +1,80 @@
+{% extends "app_actividades/base.html" %}
+{% block title %}{{ actividad.nombre }} | Centro Cultural{% endblock %}
+{% block content %}
+<div class="topbar">
+    <div>
+        <h1>{{ actividad.nombre }}</h1>
+        <p class="breadcrumb"><a href="{% url 'lista_actividades' %}"
+                style="color:var(--text-muted);text-decoration:none">Actividades</a> / Detalle</p>
+    </div>
+    <div class="actions">
+        <a href="{% url 'inscripciones_actividad' actividad.id %}" class="btn btn-success">👥 Inscripciones</a>
+        <a href="{% url 'editar_actividad' actividad.id %}" class="btn btn-primary">Editar</a>
+        <a href="{% url 'eliminar_actividad' actividad.id %}" class="btn btn-danger">Eliminar</a>
+    </div>
+</div>
+
+<div class="card" style="margin-bottom:20px">
+    <div class="detail-grid">
+        <div class="detail-item"><label>Tipo</label>
+            <p><span class="badge badge-purple">{{ actividad.tipo }}</span></p>
+        </div>
+        <div class="detail-item"><label>Horario</label>
+            <p>{{ actividad.horario_inicio|date:"d/m/Y H:i" }} - {{ actividad.horario_fin|date:"H:i" }}</p>
+        </div>
+        <div class="detail-item"><label>Duración</label>
+            <p>{{ actividad.duracion }} min</p>
+        </div>
+        <div class="detail-item"><label>Plazas disponibles</label>
+            <p>{{ actividad.plazas_disponibles }}</p>
+        </div>
+        <div class="detail-item"><label>Monitor</label>
+            <p>{{ actividad.monitor.nombre|default:"Sin asignar" }}</p>
+        </div>
+        <div class="detail-item"><label>Sala principal</label>
+            <p>{{ actividad.sala_principal.nombre|default:"Sin asignar" }}</p>
+        </div>
+    </div>
+    <div class="detail-item"><label>Descripción</label>
+        <p style="margin-top:8px; line-height:1.7; color:var(--text-muted)">{{ actividad.descripcion }}</p>
+    </div>
+</div>
+
+{% if actividad.salas_secundarias.all %}
+<div class="card" style="margin-bottom:20px">
+    <h3 style="margin-bottom:12px; font-size:15px">🏛️ Salas secundarias</h3>
+    <div style="display:flex; gap:8px; flex-wrap:wrap">
+        {% for sala in actividad.salas_secundarias.all %}
+        <span class="badge badge-yellow">{{ sala.nombre }}</span>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<div class="card">
+    <h3 style="margin-bottom:12px; font-size:15px">👤 Usuarios inscritos ({{ actividad.usuarios_inscritos.count }})</h3>
+    {% if actividad.usuarios_inscritos.all %}
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for u in actividad.usuarios_inscritos.all %}
+            <tr>
+                <td>{{ u.nombre }}</td>
+                <td>{{ u.email }}</td>
+                <td>{{ u.telefono }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="color:var(--text-muted); font-size:14px">No hay usuarios inscritos todavía. <a
+            href="{% url 'inscribir_usuario' actividad.id %}" style="color:var(--accent)">Inscribir uno →</a></p>
+    {% endif %}
+</div>
+{% endblock %}

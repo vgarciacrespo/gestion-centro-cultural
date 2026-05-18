@@ -1,0 +1,44 @@
+{% extends "app_actividades/base.html" %}
+{% block title %}Monitores | Centro Cultural{% endblock %}
+{% block content %}
+<div class="topbar">
+    <div>
+        <h1>🧑‍🏫 Monitores</h1>
+        <p class="breadcrumb">Personal docente del centro</p>
+    </div>
+    <a href="{% url 'nuevo_monitor' %}" class="btn btn-primary">+ Nuevo monitor</a>
+</div>
+
+<div class="card">
+    {% if monitores %}
+    <div class="table-wrap">
+    <table>
+        <thead><tr><th>#</th><th>Nombre</th><th>Especialización</th><th>Actividades asignadas</th><th>Acciones</th></tr></thead>
+        <tbody>
+            {% for m in monitores %}
+            <tr>
+                <td style="color:var(--text-muted)">{{ m.id }}</td>
+                <td><strong>{{ m.nombre }}</strong></td>
+                <td><span class="badge badge-yellow">{{ m.especializacion }}</span></td>
+                <td><span class="badge badge-purple">{{ m.numero_actividades_asignadas }}</span></td>
+                <td>
+                    <div class="actions">
+                        <a href="{% url 'detalle_monitor' m.id %}" class="btn btn-secondary btn-sm">Ver</a>
+                        <a href="{% url 'editar_monitor' m.id %}" class="btn btn-primary btn-sm">Editar</a>
+                        <a href="{% url 'eliminar_monitor' m.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% else %}
+    <div class="empty">
+        <span class="empty-icon">🧑‍🏫</span>
+        <p>No hay monitores registrados.</p>
+        <a href="{% url 'nuevo_monitor' %}" class="btn btn-primary" style="margin-top:16px">Añadir monitor</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

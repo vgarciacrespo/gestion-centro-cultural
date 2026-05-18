@@ -1,0 +1,85 @@
+{% extends "app_actividades/base.html" %}
+{% block title %}Actividades | Centro Cultural{% endblock %}
+{% block content %}
+<div class="topbar">
+    <div>
+        <h1>🎨 Actividades</h1>
+        <p class="breadcrumb">Listado general de actividades del centro</p>
+    </div>
+    <a href="{% url 'nueva_actividad' %}" class="btn btn-primary">+ Nueva actividad</a>
+</div>
+
+<form method="GET" class="filter-bar">
+    <div class="form-group">
+        <label>Filtrar por tipo</label>
+        <input type="text" name="tipo" value="{{ filtro_tipo }}" placeholder="ej: danza">
+    </div>
+    <div class="form-group">
+        <label>Filtrar por monitor</label>
+        <select name="monitor">
+            <option value="">Todos</option>
+            {% for m in monitores %}
+            <option value="{{ m.id }}" {% if filtro_monitor == m.id|stringformat:"s" %}selected{% endif %}>{{ m.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+    <a href="{% url 'lista_actividades' %}" class="btn btn-secondary">Limpiar</a>
+</form>
+
+<div class="card">
+    {% if actividades %}
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>Tipo</th>
+                    <th>Horario</th>
+                    <th>Duración</th>
+                    <th>Plazas</th>
+                    <th>Monitor</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in actividades %}
+                <tr>
+                    <td><span style="color:var(--text-muted)">{{ a.id }}</span></td>
+                    <td><strong>{{ a.nombre }}</strong></td>
+                    <td><span class="badge badge-purple">{{ a.tipo }}</span></td>
+                    <td>{{ a.horario_inicio|date:"d/m/Y H:i" }} - {{ a.horario_fin|date:"H:i" }}</td>
+                    <td>{{ a.duracion }} min</td>
+                    <td>
+                        {% if a.plazas_disponibles > 5 %}
+                        <span class="badge badge-green">{{ a.plazas_disponibles }}</span>
+                        {% elif a.plazas_disponibles > 0 %}
+                        <span class="badge badge-yellow">{{ a.plazas_disponibles }}</span>
+                        {% else %}
+                        <span class="badge badge-red">Completo</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ a.monitor.nombre|default:"—" }}</td>
+                    <td>
+                        <div class="actions">
+                            <a href="{% url 'detalle_actividad' a.id %}" class="btn btn-secondary btn-sm">Ver</a>
+                            <a href="{% url 'editar_actividad' a.id %}" class="btn btn-primary btn-sm">Editar</a>
+                            <a href="{% url 'eliminar_actividad' a.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty">
+        <span class="empty-icon">🎭</span>
+        <p>No hay actividades registradas aún.</p>
+        <a href="{% url 'nueva_actividad' %}" class="btn btn-primary" style="margin-top:16px">Crear primera
+            actividad</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

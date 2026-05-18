@@ -1,0 +1,47 @@
+{% extends "app_actividades/base.html" %}
+{% block title %}{{ sala.nombre }} | Centro Cultural{% endblock %}
+{% block content %}
+<div class="topbar">
+    <div>
+        <h1>{{ sala.nombre }}</h1>
+        <p class="breadcrumb"><a href="{% url 'lista_salas' %}" style="color:var(--text-muted);text-decoration:none">Salas</a> / Detalle</p>
+    </div>
+    <div class="actions">
+        <a href="{% url 'editar_sala' sala.id %}" class="btn btn-primary">Editar</a>
+        <a href="{% url 'eliminar_sala' sala.id %}" class="btn btn-danger">Eliminar</a>
+    </div>
+</div>
+
+<div class="card" style="margin-bottom:20px">
+    <div class="detail-grid">
+        <div class="detail-item"><label>Nombre</label><p>{{ sala.nombre }}</p></div>
+        <div class="detail-item"><label>Capacidad</label><p>{{ sala.capacidad }} personas</p></div>
+        <div class="detail-item"><label>Ubicación</label><p>{{ sala.ubicacion }}</p></div>
+        <div class="detail-item">
+            <label>Responsable técnico</label>
+            <p>{% if sala.responsable %}{{ sala.responsable.nombre }} ({{ sala.responsable.telefono }}){% else %}—{% endif %}</p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h3 style="margin-bottom:12px;font-size:15px">🎨 Actividades en esta sala</h3>
+    {% if sala.actividades_principal.all %}
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Como sala principal:</p>
+    <table>
+        <thead><tr><th>Actividad</th><th>Tipo</th><th>Horario</th></tr></thead>
+        <tbody>
+            {% for a in sala.actividades_principal.all %}
+            <tr>
+                <td><a href="{% url 'detalle_actividad' a.id %}" style="color:var(--accent)">{{ a.nombre }}</a></td>
+                <td><span class="badge badge-purple">{{ a.tipo }}</span></td>
+                <td>{{ a.horario_inicio|date:"d/m/Y H:i" }} - {{ a.horario_fin|date:"H:i" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="color:var(--text-muted);font-size:14px">Esta sala no es sala principal de ninguna actividad.</p>
+    {% endif %}
+</div>
+{% endblock %}

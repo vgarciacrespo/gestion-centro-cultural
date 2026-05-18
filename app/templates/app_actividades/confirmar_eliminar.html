@@ -1,0 +1,20 @@
+{% extends "app_actividades/base.html" %}
+{% block title %}Confirmar eliminación | Centro Cultural{% endblock %}
+{% block content %}
+<div style="max-width:500px; margin:auto; padding-top:40px">
+    <div class="card" style="text-align:center; padding:48px 32px">
+        <div style="font-size:56px; margin-bottom:16px">⚠️</div>
+        <h1 style="font-size:20px; margin-bottom:8px">¿Eliminar este {{ tipo }}?</h1>
+        <p style="color:var(--text-muted); margin-bottom:4px; font-size:15px">
+            Se eliminará: <strong>{{ objeto }}</strong>
+            {% if mensaje_extra %}<span style="color:var(--text-muted)"> {{ mensaje_extra }}</span>{% endif %}
+        </p>
+        <p style="color:var(--danger); font-size:13px; margin-bottom:32px">Esta acción no se puede deshacer.</p>
+        <form method="POST" style="display:flex;gap:12px;justify-content:center">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+            <a href="{% url volver %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

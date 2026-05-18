@@ -1,0 +1,45 @@
+{% extends "app_actividades/base.html" %}
+{% block title %}Salas | Centro Cultural{% endblock %}
+{% block content %}
+<div class="topbar">
+    <div>
+        <h1>🏛️ Salas</h1>
+        <p class="breadcrumb">Espacios del centro cultural</p>
+    </div>
+    <a href="{% url 'nueva_sala' %}" class="btn btn-primary">+ Nueva sala</a>
+</div>
+
+<div class="card">
+    {% if salas %}
+    <div class="table-wrap">
+    <table>
+        <thead><tr><th>#</th><th>Nombre</th><th>Capacidad</th><th>Ubicación</th><th>Responsable</th><th>Acciones</th></tr></thead>
+        <tbody>
+            {% for s in salas %}
+            <tr>
+                <td style="color:var(--text-muted)">{{ s.id }}</td>
+                <td><strong>{{ s.nombre }}</strong></td>
+                <td>{{ s.capacidad }} personas</td>
+                <td>{{ s.ubicacion }}</td>
+                <td>{{ s.responsable.nombre|default:"—" }}</td>
+                <td>
+                    <div class="actions">
+                        <a href="{% url 'detalle_sala' s.id %}" class="btn btn-secondary btn-sm">Ver</a>
+                        <a href="{% url 'editar_sala' s.id %}" class="btn btn-primary btn-sm">Editar</a>
+                        <a href="{% url 'eliminar_sala' s.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% else %}
+    <div class="empty">
+        <span class="empty-icon">🏛️</span>
+        <p>No hay salas registradas.</p>
+        <a href="{% url 'nueva_sala' %}" class="btn btn-primary" style="margin-top:16px">Añadir sala</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

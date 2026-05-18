@@ -1,0 +1,44 @@
+{% extends "app_actividades/base.html" %}
+{% block title %}{{ usuario.nombre }} | Centro Cultural{% endblock %}
+{% block content %}
+<div class="topbar">
+    <div>
+        <h1>{{ usuario.nombre }}</h1>
+        <p class="breadcrumb"><a href="{% url 'lista_usuarios' %}" style="color:var(--text-muted);text-decoration:none">Usuarios</a> / Detalle</p>
+    </div>
+    <div class="actions">
+        <a href="{% url 'editar_usuario' usuario.id %}" class="btn btn-primary">Editar</a>
+        <a href="{% url 'eliminar_usuario' usuario.id %}" class="btn btn-danger">Eliminar</a>
+    </div>
+</div>
+
+<div class="card" style="margin-bottom:20px">
+    <div class="detail-grid">
+        <div class="detail-item"><label>Nombre</label><p>{{ usuario.nombre }}</p></div>
+        <div class="detail-item"><label>Edad</label><p>{{ usuario.edad }} años</p></div>
+        <div class="detail-item"><label>Email</label><p>{{ usuario.email }}</p></div>
+        <div class="detail-item"><label>Teléfono</label><p>{{ usuario.telefono }}</p></div>
+    </div>
+</div>
+
+<div class="card">
+    <h3 style="margin-bottom:12px; font-size:15px">🎨 Actividades en las que está inscrito</h3>
+    {% if usuario.actividades.all %}
+    <table>
+        <thead><tr><th>Actividad</th><th>Tipo</th><th>Horario</th><th>Monitor</th></tr></thead>
+        <tbody>
+            {% for a in usuario.actividades.all %}
+            <tr>
+                <td><a href="{% url 'detalle_actividad' a.id %}" style="color:var(--accent)">{{ a.nombre }}</a></td>
+                <td><span class="badge badge-purple">{{ a.tipo }}</span></td>
+                <td>{{ a.horario_inicio|date:"d/m/Y H:i" }} - {{ a.horario_fin|date:"H:i" }}</td>
+                <td>{{ a.monitor.nombre|default:"—" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="color:var(--text-muted);font-size:14px">Este usuario no está inscrito en ninguna actividad.</p>
+    {% endif %}
+</div>
+{% endblock %}

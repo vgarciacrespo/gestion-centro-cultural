@@ -1,0 +1,60 @@
+{% extends "app_actividades/base.html" %}
+{% block title %}Usuarios | Centro Cultural{% endblock %}
+{% block content %}
+<div class="topbar">
+    <div>
+        <h1>👥 Usuarios Inscritos</h1>
+        <p class="breadcrumb">Listado general de usuarios registrados</p>
+    </div>
+    <a href="{% url 'nuevo_usuario' %}" class="btn btn-primary">+ Nuevo usuario</a>
+</div>
+
+<form method="GET" class="filter-bar">
+    <div class="form-group">
+        <label>Filtrar por actividad</label>
+        <select name="actividad">
+            <option value="">Todas</option>
+            {% for act in actividades %}
+            <option value="{{ act.id }}" {% if filtro_actividad == act.id|stringformat:"s" %}selected{% endif %}>{{ act.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+    <a href="{% url 'lista_usuarios' %}" class="btn btn-secondary">Limpiar</a>
+</form>
+
+<div class="card">
+    {% if usuarios %}
+    <div class="table-wrap">
+    <table>
+        <thead><tr><th>#</th><th>Nombre</th><th>Edad</th><th>Email</th><th>Teléfono</th><th>Actividades</th><th>Acciones</th></tr></thead>
+        <tbody>
+            {% for u in usuarios %}
+            <tr>
+                <td style="color:var(--text-muted)">{{ u.id }}</td>
+                <td><strong>{{ u.nombre }}</strong></td>
+                <td>{{ u.edad }} años</td>
+                <td>{{ u.email }}</td>
+                <td>{{ u.telefono }}</td>
+                <td><span class="badge badge-purple">{{ u.actividades.count }}</span></td>
+                <td>
+                    <div class="actions">
+                        <a href="{% url 'detalle_usuario' u.id %}" class="btn btn-secondary btn-sm">Ver</a>
+                        <a href="{% url 'editar_usuario' u.id %}" class="btn btn-primary btn-sm">Editar</a>
+                        <a href="{% url 'eliminar_usuario' u.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% else %}
+    <div class="empty">
+        <span class="empty-icon">👤</span>
+        <p>No hay usuarios registrados.</p>
+        <a href="{% url 'nuevo_usuario' %}" class="btn btn-primary" style="margin-top:16px">Registrar usuario</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

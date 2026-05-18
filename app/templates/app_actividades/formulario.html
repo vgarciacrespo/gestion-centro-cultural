@@ -1,0 +1,32 @@
+{% extends "app_actividades/base.html" %}
+{% block title %}{{ titulo }} | Centro Cultural{% endblock %}
+{% block content %}
+<div class="topbar">
+    <div>
+        <h1>{{ titulo }}</h1>
+    </div>
+    <a href="{% url volver %}" class="btn btn-secondary">← Volver</a>
+</div>
+
+<div class="card" style="max-width:680px">
+    <form method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+            <ul class="errorlist">{% for e in field.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+            {% endif %}
+            {% if field.help_text %}
+            <small style="color:var(--text-muted);font-size:12px">{{ field.help_text }}</small>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <div style="display:flex;gap:12px;margin-top:24px">
+            <button type="submit" class="btn btn-primary">💾 Guardar</button>
+            <a href="{% url volver %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
