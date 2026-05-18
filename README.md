@@ -138,7 +138,6 @@ def save(self, *args, **kwargs):
 Para evitar conflictos donde dos actividades ocupen la misma sala en el mismo intervalo de tiempo, `ActividadForm` (dentro de `forms.py`) ejecuta una validación avanzada en su método `clean()`:
 1. Define un rango temporal con la nueva actividad (entre `horario_inicio` y `horario_fin`).
 2. Genera una consulta de intersección horaria lógica:
-   $$\text{Solapamiento} = (\text{inicio\_existente} < \text{fin\_nuevo}) \land (\text{fin\_existente} > \text{inicio\_nuevo})$$
 3. Excluye la actividad actual si se trata de una edición (`self.instance.pk`).
 4. **Verificación de Sala Principal:** Valida si la `sala_principal` elegida ya está ocupada como sala principal o secundaria en otra actividad que se solape.
 5. **Verificación de Salas Secundarias:** Itera sobre cada una de las `salas_secundarias` solicitadas, corroborando que no estén reservadas como principal o secundaria en actividades concurrentes.
