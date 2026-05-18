@@ -1,7 +1,7 @@
 # 🎭 Sistema de Gestión de Actividades - Centro Cultural Municipal
 
 [![Django](https://img.shields.io/badge/Django-6.0-092E20?style=for-the-badge&logo=django&logoColor=white)](https://djangoproject.com)
-[![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Python](https://img.shields.io/badge/Python-3-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![SQLite](https://img.shields.io/badge/SQLite-3-003B57?style=for-the-badge&logo=sqlite&logoColor=white)](https://sqlite.org)
 [![Aesthetics](https://img.shields.io/badge/UI-Premium_Dark_Mode-6c63ff?style=for-the-badge)](https://fonts.google.com/specimen/Inter)
 
